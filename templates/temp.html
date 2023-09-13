@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DGGAN Architecture</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+        overflow: auto;
+      }
+      #left-portion {
+        height: 50%;
+        width: 40%;
+         /* border: 2px dashed black; */
+        overflow: hidden;
+      }
+      #discriminator-model,
+      #generator-model {
+        height: 100%;
+        width: 90%;
+      }
+      #discriminator-model img,
+      #generator-model img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+      }
+      #noise-disc {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 40px;
+        width: 50px;
+        margin-top: 170px;
+        margin-left: 30px;
+         /* border: 2px dashed black; */
+        z-index: 1;
+      }
+      #generator-disc {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 40px;
+        width: 80px;
+        margin-top: 170px;
+        margin-left: 109px;
+         /* border: 2px dashed black; */
+        z-index: 1;
+      }
+      #discriminator-disc {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 40px;
+        width: 86px;
+        margin-top: 169px;
+        margin-left: 316px;
+         /* border: 2px dashed black; */
+        z-index: 1;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="left-portion">
+      <div id="discriminator-model">
+        <img src="discriminator.png" alt="discriminator" />
+        <div id="noise-disc"></div>
+        <div id="generator-disc"></div>
+        <div id="discriminator-disc"></div>s
+      </div>
+      <div id="generator-model">
+        <img src="generator.png" alt="generator" />
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DCGAN Architecture</title>
+    <link rel="stylesheet" href="../css/index.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <h1 class="nav-heading">DCGAN Visualizer</h1>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="https://www.coursera.org/learn/build-basic-generative-adversarial-networks-gans/">Learn</a></li>
+          <li><a href="https://github.com/Manraj-Mann/">Github</a></li>
+        </ul>
+      </nav>
+    </header>
+    <section id="note">
+      <p> <strong>*Note :</strong> Below simulation according to the <a href="#figure2">Figure 2</a> given below and components that will be involved in the cycle will be highlighted with respective color (<ar>Green</ar> - Generator , <kk>Red</kk> - Discriminator).</p>
+    </section>
+    <section id="simulator-section">
+      <div id="simulator">
+        <div id="architecture">
+          <div class="controls-container">
+            <button id="play-btn" onclick="play()">Play</button>
+            <button id="reset-btn" onclick="stop()">Reset</button>
+            <label>
+              <input type="checkbox" id="pretrained-checkbox" />
+              Use Complete Pretrained Model
+            </label>
+            <label>
+              <input type="checkbox" id="partially-trained-checkbox" />
+              Use Partially Trained Model
+            </label>
+          </div>
+
+          <div id="latent-container">
+            <img
+              id="latent-chart"
+              src="../assets/No_image_available.svg.web.webp"
+              alt="latent-chart"
+            />
+            <figcaption>Latent Vector</figcaption>
+          </div>
+
+          <div id="generator-container">
+            <figure>
+              <canvas id="generator-chart"></canvas>
+              <figcaption>Generator</figcaption>
+            </figure>
+          </div>
+
+          <div id="real-fake-sample">
+            <div id="real-images-div">
+              <img id="real-images-div-img" src="../assets/temp.png" />
+              <figcaption>Real</figcaption>
+            </div>
+            <div id="fake-images-div">
+              <img id="fake-images-div-img" src="../assets/temp.png" />
+              <figcaption>Fake</figcaption>
+            </div>
+          </div>
+
+          <div id="discriminator-container">
+            <figure>
+              <canvas id="discriminator-chart"></canvas>
+              <figcaption>Discriminator</figcaption>
+            </figure>
+          </div>
+
+          <div id="loss-container">
+            <figure>
+              <p id="loss-here">Model Loss</p>
+              <figcaption>BCE Loss</figcaption>
+            </figure>
+          </div>
+
+          <div id="text-label" class="bottom-right-label">
+            <p id="training-cycle">Traning Cycle : None</p>
+          </div>
+
+        </div>
+          
+        <div id="chart-container">
+          <canvas id="loss-chart"></canvas>
+          <br>
+          <figcaption><strong>Plot :</strong><it> Loss (Generator and Discriminator) V/S Epochs</it></figcaption>
+        </div>
+      </div>
+    </section>
+    <section>
+
+    <section id="simulation-note"> <figcaption><it><strong>Simulation :</strong> The simulation of the process is according to the <a href="#figure2">figure 2</a> given below refer to figure if any confusion. 
+    </it></figcaption>
+  </section>
+
+  <section id="simulation-note">
+    <figcaption><stron>*Note :</stron><it> Discriminator uses both fake and real images to train whereas generator generate the image as pass it to discriminator for feedback.</it></figcaption>
+  </section>
+
+    <section id="gan-details">
+      <article>
+        <h1>DCGAN: Deep Convolutional Generative Adversarial Network</h1>
+
+        <p>
+          DCGAN, which stands for Deep Convolutional Generative Adversarial
+          Network, is a type of generative model used in the field of machine
+          learning and computer vision. It combines the power of convolutional
+          neural networks (CNNs) with the adversarial training framework of GANs
+          (Generative Adversarial Networks) to generaterealistic and
+          high-quality synthetic images.
+
+          <br />
+        </p>
+        <ol>
+          <li>
+            <strong>What is GAN ? </strong>
+            <p>
+              A Generative Adversarial Network (GAN) is a deep learning model
+              consisting of two neural networks: the generator and the
+              discriminator. GANs are designed to generate new data that
+              resembles a given training dataset. They are widely used for tasks
+              such as image synthesis, text generation, and video generation.
+              The generator network takes random noise as input and generates
+              new samples. It tries to create realistic data that can fool the
+              discriminator. On the other hand, the discriminator network learns
+              to distinguish between real samples from the training data and
+              fake samples generated by the generator. The goal of GAN training
+              is to find an equilibrium where the generator generates realistic
+              samples that the discriminator cannot differentiate from real
+              samples.
+            </p>
+            <p>
+              GANs have been successfully applied in various domains, including
+              computer vision, natural language processing, and audio synthesis.
+              They have produced impressive results in generating realistic
+              images, generating human-like text, and creating deepfake videos.
+              However, training GANs can be challenging as it involves finding a
+              delicate balance between the generator and the discriminator.
+              Instability during training, mode collapse, and other challenges
+              are common in GAN training. Researchers continue to explore
+              techniques and variations to improve the stability and performance
+              of GAN models.
+            </p>
+            <p>
+              The Generative Adversarial Network (GAN) architecture is composed
+              of two key components: the generator and the discriminator. These
+              components work together in a competitive process, enabling the
+              GAN to generate new data samples that resemble the training data.
+            </p>
+            <figure>
+              <img
+                src="../assets/gan-arch.png"
+                alt="GAN Architecture"
+                width="500"
+                height="300"
+              />
+              <figcaption>Figure 1: GAN Architecture</figcaption>
+            </figure>
+
+            <p>
+              The generator network takes random noise as input and transforms
+              it into synthetic data samples. Its objective is to generate data
+              that is realistic enough to deceive the discriminator. On the
+              other hand, the discriminator network acts as a classifier that
+              aims to distinguish between real data samples from the training
+              set and fake data samples generated by the generator. It is
+              trained on a combination of real and generated data. The training
+              process of GANs involves an adversarial game between the generator
+              and the discriminator. As the generator improves its ability to
+              generate realistic samples, the discriminator simultaneously
+              becomes more skilled at distinguishing real from fake samples.
+              This competitive process drives both networks to improve their
+              performance over time.
+
+            </p>
+              <br/>
+
+              <figure id="figure2">
+                <img
+                  src="../assets/traindis.png"
+                  alt="GAN Training Cycles"
+                  width="500"
+                  height="400"
+                />
+                <img src="../assets/traingen.png" alt="" width="500"
+                height="300">
+                <figcaption>Figure 2 : GAN Training Cycles</figcaption>
+
+            <p>
+
+              GANs have demonstrated remarkable success in generating
+              high-quality synthetic data, including images, text, and audio.
+              They have been applied in various domains, such as image
+              synthesis, text generation, style transfer, and data augmentation.
+            </p>
+            <p>
+              It is worth noting that training GANs can be challenging, and
+              careful hyperparameter tuning and architectural considerations are
+              often necessary for stable and effective training.
+            </p>
+          </li>
+          <br />
+          <li>
+            <strong>The DCGAN architecture</strong>
+            <p>
+              The DCGAN architecture consists of two main components: the
+              generator and the discriminator. The generator takes random noise
+              as input and generates synthetic images. The discriminator, on the
+              other hand, tries to distinguish between the real images and the
+              fake images generated by the generator. Here's how the generator
+              and discriminator are trained in the DCGAN:
+            </p>
+
+            <ul>
+              <li>
+                <strong>Generator:</strong>
+                <p>
+                  The generator takes random noise as input and generates fake
+                  images. These fake images are then fed into the discriminator.
+                  The generator aims to generate images that can fool the
+                  discriminator into classifying them as real.
+                </p>
+
+                <figure>
+                  <img
+                    src="../assets/generator-dcgan.png"
+                    alt="DCGAN Generator Architecture"
+                    width="700"
+                    height="300"
+                  />
+                  <figcaption>Figure 3: DCGAN Generator Architecture</figcaption>
+                </figure>
+              </li>
+              <li>
+                <strong>Discriminator: </strong>
+                <p>
+                  The discriminator receives both real and fake images as input.
+                  It learns to classify the real images as real and the fake
+                  images as fake. The discriminator's objective is to correctly
+                  classify the images and improve its discrimination ability.
+                </p>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <strong>Training Process</strong>
+            <p>
+              The training process involves an adversarial game between the
+              generator and discriminator. The generator tries to improve its
+              image generation to fool the discriminator, while the
+              discriminator tries to improve its discrimination ability to
+              correctly classify the real and fake images. DCGAN has achieved
+              remarkable success in generating high-quality synthetic images
+              across various domains, including natural images, faces, and
+              artworks. It has been used in applications such as image
+              synthesis, image editing, and data augmentation. By training the
+              DCGAN architecture with a large dataset, adjusting
+              hyperparameters, and optimizing the training process, it is
+              possible to generate highly realistic and visually appealing
+              synthetic images. The training process of DCGAN (Deep
+              Convolutional Generative Adversarial Network) involves iteratively
+              updating the weights of the generator and discriminator networks
+              through backpropagation and optimization algorithms. Here's a
+              plain text explanation of the training process:
+            </p>
+
+            <ol>
+              <li>
+                <strong>Initialization:</strong> Initialize the weights of the
+                generator and discriminator networks randomly or using
+                pre-trained weights if available.
+              </li>
+              <li>
+                <strong>Data Preparation:</strong> Prepare a dataset of real
+                samples, typically images, that will serve as the training data.
+                Preprocess the data, such as resizing and normalizing the
+                images, to ensure consistency.
+              </li>
+              <li>
+                <strong>Adversarial Training:</strong> Alternating between
+                training the generator and discriminator networks. a. Generator
+                Training: - Generate fake samples: Input random noise vectors
+                into the generator network to generate fake samples. -
+                Discriminator feedback: Feed the generated fake samples along
+                with real samples into the discriminator network. - Calculate
+                generator loss: Compute the loss based on the discriminator's
+                feedback to determine how well the generator is performing. -
+                Backpropagation and optimization: Update the generator's weights
+                using backpropagation and an optimization algorithm, such as
+                Stochastic Gradient Descent (SGD) or Adam, to minimize the
+                generator loss. b. Discriminator Training: - Discriminator
+                feedback on real samples: Input real samples from the dataset
+                into the discriminator network and obtain its classification
+                results. - Discriminator feedback on fake samples: Input the
+                generated fake samples from the generator into the discriminator
+                and obtain its classification results. - Calculate discriminator
+                loss: Compute the loss for the discriminator based on its
+                ability to distinguish between real and fake samples. -
+                Backpropagation and optimization: Update the discriminator's
+                weights using backpropagation and an optimization algorithm to
+                minimize the discriminator loss.
+              </li>
+
+              <li>
+                <strong>Repeat Steps 3a and 3b:</strong> Iterate the adversarial
+                training process, alternating between updating the generator and
+                discriminator networks, for a specific number of epochs or until
+                convergence is reached.
+              </li>
+
+              <li>
+                <strong>Evaluation:</strong> Assess the quality of the generated
+                samples by visual inspection, quantitative metrics, or other
+                evaluation methods. Adjust hyperparameters or experiment with
+                architectural changes if necessary.
+              </li>
+              <li>
+                <strong>Generation of Synthetic Samples:</strong> Once the DCGAN
+                is trained, you can use the generator network to generate new
+                synthetic samples by inputting random noise vectors into the
+                generator.
+              </li>
+              
+              <figure>
+                <img
+                  src="../assets/dcganarch.png"
+                  alt="DCGAN Architecture"
+                  width="1000"
+                  height="300"
+                />
+                <figcaption>Figure 4 : DCGAN Generator Architecture</figcaption>
+              </figure>
+
+              By repeating the adversarial training process, the generator and
+              discriminator networks learn to improve their performance, with
+              the generator generating more realistic samples and the
+              discriminator becoming better at distinguishing between real and
+              fake samples. The goal is to reach an equilibrium where the
+              generator produces samples that are indistinguishable from real
+              data.
+            </ol>
+          </li>
+        </ol>
+      </article>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../scripts/index.js"></script>
+    <footer>
+      <p>&copy; 2023  <a href="https://github.com/Manraj-Mann/"> github.com/ManrajMann</a> All rights reserved.</p>
+    </footer>
+  </body>
+</html>
