@@ -3,7 +3,7 @@ DCGAN Visualizer Using Pytorch
 
 Dataset used : [https://www.kaggle.com/datasets/manrajsinghmann/dataset-anime](https://www.kaggle.com/datasets/splcher/animefacedataset/)
 
-Torch : pip3 install --pre torch -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
+Torch : pip3 install --pre torch torchvision -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
 
 **Note** Please create a folder named as dataset and download dataset there and then use the project
 
